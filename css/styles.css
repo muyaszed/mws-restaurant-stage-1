@@ -32,8 +32,9 @@ h1, h2, h3, h4, h5, h6 {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 0 20px;
 }
-article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section div{
 	display: block;
+	box-sizing: border-box;
 }
 #maincontent {
   background-color: #f3f3f3;
@@ -106,9 +107,10 @@ nav h1 a {
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
   width: 100%;
-  height: 50px;
+  /* height: 50px; */
   background-color: #3397DB;
   align-items: center;
+
 }
 .filter-options h2 {
   color: white;
@@ -116,6 +118,7 @@ nav h1 a {
   font-weight: normal;
   line-height: 1;
   margin: 0 20px;
+	padding: 10px 0 0 0;
 }
 .filter-options select {
   background-color: white;
@@ -126,7 +129,23 @@ nav h1 a {
   letter-spacing: 0;
   margin: 10px;
   padding: 0 10px;
-  width: 200px;
+	box-sizing: border-box;
+  /* width: 200px; */
+	width: 100%;
+}
+
+.filter-select-container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+@media screen and (min-width: 450px) {
+	.filter-options select {
+		margin-right: 0;
+		width: calc(50% - 15px);
+
+	}
+
 }
 
 /* ====================== Restaurant Listing ====================== */
@@ -136,6 +155,9 @@ nav h1 a {
   margin: 0;
   padding: 30px 15px 60px;
   text-align: center;
+	display: flex;
+	flex-wrap: wrap;
+
 }
 #restaurants-list li {
   background-color: #fff;
@@ -145,7 +167,9 @@ nav h1 a {
   min-height: 380px;
   padding: 0 30px 25px;
   text-align: left;
-  width: 270px;
+	box-sizing: border-box;
+  /* width: 270px; */
+	width: 100%;
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
@@ -181,6 +205,23 @@ nav h1 a {
   text-decoration: none;
   text-transform: uppercase;
 }
+
+@media screen and (min-width: 450px) {
+	#restaurants-list li {
+		margin-right: 0;
+		width: calc(50% - 15px);
+		/* width: 270px; */
+	}
+
+}
+
+@media screen and (min-width: 850px) {
+	#restaurants-list li {
+		width: 50%;
+		/* width: 230px; */
+	}
+}
+
 
 /* ====================== Restaurant Details ====================== */
 .inside header {
