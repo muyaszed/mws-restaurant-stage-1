@@ -15,6 +15,11 @@
 
 @media screen and (min-width: 860px) {
 
+  #maincontent, header, footer {
+    width: 1020px;
+    margin: 0 auto;
+  }
+
 	.filter-options select {
 		margin-right: 0;
 		width: calc(50% - 15px);
@@ -23,7 +28,7 @@
 
   #restaurants-list {
 		width: 1000px;
-		margin: 0 auto;
+    padding: 0;
 	}
 
 	#restaurants-list li {
