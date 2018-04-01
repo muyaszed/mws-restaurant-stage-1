@@ -139,14 +139,7 @@ nav h1 a {
 	flex-wrap: wrap;
 }
 
-@media screen and (min-width: 450px) {
-	.filter-options select {
-		margin-right: 0;
-		width: calc(50% - 15px);
 
-	}
-
-}
 
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
@@ -206,21 +199,6 @@ nav h1 a {
   text-transform: uppercase;
 }
 
-@media screen and (min-width: 450px) {
-	#restaurants-list li {
-		margin-right: 0;
-		width: calc(50% - 15px);
-		/* width: 270px; */
-	}
-
-}
-
-@media screen and (min-width: 850px) {
-	#restaurants-list li {
-		width: 50%;
-		/* width: 230px; */
-	}
-}
 
 
 /* ====================== Restaurant Details ====================== */

@@ -1,0 +1,35 @@
+@media screen and (min-width: 450px) {
+	.filter-options select {
+		margin-right: 0;
+		width: calc(50% - 15px);
+
+	}
+
+  #restaurants-list li {
+		margin-right: 0;
+		width: calc(50% - 15px);
+		/* width: 270px; */
+	}
+
+}
+
+@media screen and (min-width: 860px) {
+
+	.filter-options select {
+		margin-right: 0;
+		width: calc(50% - 15px);
+
+	}
+
+  #restaurants-list {
+		width: 1000px;
+		margin: 0 auto;
+	}
+
+	#restaurants-list li {
+		margin-right: 0;
+		width: calc(33.33333% - 15px);
+		/* width: 230px; */
+	}
+
+}
