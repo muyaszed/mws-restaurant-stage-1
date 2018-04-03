@@ -55,6 +55,7 @@ nav {
   height: 80px;
   background-color: #252831;
   text-align:center;
+	padding: 20px 0 0 0;
 }
 nav h1 {
   margin: auto;
@@ -98,6 +99,19 @@ nav h1 a {
     color: #01447e;
     text-decoration: underline;
 }
+/* ====================== Skip Items ====================== */
+#skip-item {
+	position: absolute;
+	top: -200px;
+	background: #BF1722;
+	color: white;
+	padding: 10px;
+	z-index: 100;
+}
+
+#skip-item:focus {
+	top: 80px;
+}
 /* ====================== Map ====================== */
 #map {
   height: 400px;
@@ -132,6 +146,10 @@ nav h1 a {
 	box-sizing: border-box;
   /* width: 200px; */
 	width: 100%;
+}
+
+.filter-options select:focus {
+	outline-color: #ffa500;
 }
 
 .filter-select-container {
