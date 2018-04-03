@@ -167,4 +167,23 @@ class DBHelper {
     return marker;
   }
 
+  // generate picture element and images
+  static picturesForRestaurant(restaurant, picture) {
+    const sourceLarge = document.createElement('source');
+    sourceLarge.srcset = `/images/${restaurant.id}-large.jpg`;
+    sourceLarge.media = `(min-width: 860px)`
+    picture.append(sourceLarge);
+
+    const sourceMedium = document.createElement('source');
+    sourceMedium.srcset = `/images/${restaurant.id}-medium.jpg`
+    sourceMedium.media = `(min-width: 450px)`
+    picture.append(sourceMedium);
+
+    const image = document.createElement('img');
+    image.className = 'restaurant-img';
+    image.src = DBHelper.imageUrlForRestaurant(restaurant);
+    image.alt = `${restaurant.name}'s restaurant picture`;
+    picture.append(image);
+  }
+
 }
