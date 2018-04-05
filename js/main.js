@@ -143,7 +143,7 @@ createRestaurantHTML = (restaurant) => {
 
   DBHelper.picturesForRestaurant(restaurant, picture);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);
 
