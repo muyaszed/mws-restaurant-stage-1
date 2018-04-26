@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
    DBHelper.fetchNeighborhoods().then(neighborhoods => {
      self.neighborhoods = neighborhoods;
      fillNeighborhoodsHTML();
+   }).catch(error => {
+     console.log(error);
    });
  }
 // fetchNeighborhoods = () => {
@@ -48,16 +50,24 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
 /**
  * Fetch all cuisines and set their HTML.
  */
-fetchCuisines = () => {
-  DBHelper.fetchCuisines((error, cuisines) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
-      self.cuisines = cuisines;
-      fillCuisinesHTML();
-    }
-  });
-}
+ fetchCuisines = () => {
+   DBHelper.fetchCuisines().then(cuisines => {
+     self.cuisines = cuisines;
+     fillCuisinesHTML();
+   }).catch(error => {
+     console.log(error);
+   })
+ }
+// fetchCuisines = () => {
+//   DBHelper.fetchCuisines((error, cuisines) => {
+//     if (error) { // Got an error!
+//       console.error(error);
+//     } else {
+//       self.cuisines = cuisines;
+//       fillCuisinesHTML();
+//     }
+//   });
+// }
 
 /**
  * Set cuisines HTML.

@@ -144,20 +144,32 @@ class DBHelper {
   /**
    * Fetch all cuisines with proper error handling.
    */
-  static fetchCuisines(callback) {
-    // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Get all cuisines from all restaurants
-        const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
-        // Remove duplicates from cuisines
-        const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
-        callback(null, uniqueCuisines);
-      }
-    });
-  }
+   static fetchCuisines() {
+     // Fetch all restaurants
+     return DBHelper.fetchRestaurants().then(restaurants => {
+       // Get all cuisines from all restaurants
+       const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
+       // Remove duplicates from cuisines
+       const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
+       return uniqueCuisines;
+     }).catch(error => {
+       return error;
+     })
+   }
+  // static fetchCuisines(callback) {
+  //   // Fetch all restaurants
+  //   DBHelper.fetchRestaurants((error, restaurants) => {
+  //     if (error) {
+  //       callback(error, null);
+  //     } else {
+  //       // Get all cuisines from all restaurants
+  //       const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
+  //       // Remove duplicates from cuisines
+  //       const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
+  //       callback(null, uniqueCuisines);
+  //     }
+  //   });
+  // }
 
   /**
    * Restaurant page URL.
