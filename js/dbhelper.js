@@ -93,30 +93,42 @@ class DBHelper {
   /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
-  static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
-    // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        let results = restaurants
-        if (cuisine != 'all') { // filter by cuisine
-          results = results.filter(r => r.cuisine_type == cuisine);
-        }
-        if (neighborhood != 'all') { // filter by neighborhood
-          results = results.filter(r => r.neighborhood == neighborhood);
-        }
-        callback(null, results);
+  static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
+    return DBHelper.fetchRestaurants().then(restaurants => {
+      let results = restaurants
+      if (cuisine != 'all') { // filter by cuisine
+        results = results.filter(r => r.cuisine_type == cuisine);
       }
-    });
+      if (neighborhood != 'all') { // filter by neighborhood
+        results = results.filter(r => r.neighborhood == neighborhood);
+      }
+      return results;
+    })
   }
+  // static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
+  //   // Fetch all restaurants
+  //   DBHelper.fetchRestaurants((error, restaurants) => {
+  //     if (error) {
+  //       callback(error, null);
+  //     } else {
+  //       let results = restaurants
+  //       if (cuisine != 'all') { // filter by cuisine
+  //         results = results.filter(r => r.cuisine_type == cuisine);
+  //       }
+  //       if (neighborhood != 'all') { // filter by neighborhood
+  //         results = results.filter(r => r.neighborhood == neighborhood);
+  //       }
+  //       callback(null, results);
+  //     }
+  //   });
+  // }
 
   /**
    * Fetch all neighborhoods with proper error handling.
    */
   static fetchNeighborhoods() {
     return DBHelper.fetchRestaurants().then(restaurants => {
-      console.log(restaurants);
+      
       // Get all neighborhoods from all restaurants
       const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
       // Remove duplicates from neighborhoods

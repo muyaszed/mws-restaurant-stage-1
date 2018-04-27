@@ -103,6 +103,7 @@ window.initMap = () => {
  * Update page and map for current restaurants.
  */
 updateRestaurants = () => {
+
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
 
@@ -112,14 +113,22 @@ updateRestaurants = () => {
   const cuisine = cSelect[cIndex].value;
   const neighborhood = nSelect[nIndex].value;
 
-  DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
-      resetRestaurants(restaurants);
-      fillRestaurantsHTML();
-    }
+  DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood).then(restaurants => {
+    console.log(restaurants);
+    resetRestaurants(restaurants);
+    fillRestaurantsHTML();
+  }).catch(error => {
+    console.log(error);
   })
+
+  // DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+  //   if (error) { // Got an error!
+  //     console.error(error);
+  //   } else {
+  //     resetRestaurants(restaurants);
+  //     fillRestaurantsHTML();
+  //   }
+  // })
 }
 
 /**
