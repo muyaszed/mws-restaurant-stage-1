@@ -4,13 +4,19 @@ let restaurants,
 var map
 var markers = []
 
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
+  DBHelper.fillDatabase();
   fetchNeighborhoods();
   fetchCuisines();
+
 });
+
+
+
 
 /**
  * Fetch all neighborhoods and set their HTML.
@@ -23,16 +29,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
      console.log(error);
    });
  }
-// fetchNeighborhoods = () => {
-//   DBHelper.fetchNeighborhoods((error, neighborhoods) => {
-//     if (error) { // Got an error
-//       console.error(error);
-//     } else {
-//       self.neighborhoods = neighborhoods;
-//       fillNeighborhoodsHTML();
-//     }
-//   });
-// }
 
 /**
  * Set neighborhoods HTML.
@@ -58,16 +54,6 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
      console.log(error);
    })
  }
-// fetchCuisines = () => {
-//   DBHelper.fetchCuisines((error, cuisines) => {
-//     if (error) { // Got an error!
-//       console.error(error);
-//     } else {
-//       self.cuisines = cuisines;
-//       fillCuisinesHTML();
-//     }
-//   });
-// }
 
 /**
  * Set cuisines HTML.
@@ -121,14 +107,6 @@ updateRestaurants = () => {
     console.log(error);
   })
 
-  // DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
-  //   if (error) { // Got an error!
-  //     console.error(error);
-  //   } else {
-  //     resetRestaurants(restaurants);
-  //     fillRestaurantsHTML();
-  //   }
-  // })
 }
 
 /**
