@@ -4,10 +4,10 @@ var map;
 /**
  * Initialize Google map, called from HTML.
  */
-window.initMap = () => {
+window.initMapRestaurant = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
-      console.error(error);
+      console.log(error);
     } else {
       self.map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
@@ -41,17 +41,6 @@ fetchRestaurantFromURL = (callback) => {
       console.log(error);
       return;
     })
-
-
-    // DBHelper.fetchRestaurantById(id, (error, restaurant) => {
-    //   self.restaurant = restaurant;
-    //   if (!restaurant) {
-    //     console.error(error);
-    //     return;
-    //   }
-    //   fillRestaurantHTML();
-    //   callback(null, restaurant)
-    // });
   }
 }
 
@@ -64,11 +53,6 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
-
-
-  // const image = document.getElementById('restaurant-img');
-  // image.className = 'restaurant-img'
-  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
