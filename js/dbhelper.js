@@ -18,6 +18,18 @@ class DBHelper {
     })
   }
 
+  static openReviewDatabase() {
+    if (!navigator.serviceWorker) {
+      return Promise.resolve();
+    }
+
+    return idb.open('review', 1, (upgradeDb) => {
+      const store = upgradeDb.createObjectStore('reviews', {
+        keyPath: 'id'
+      });
+    })
+  }
+
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
@@ -27,7 +39,32 @@ class DBHelper {
     return `http://localhost:${port}/restaurants`;
   }
 
-  static fillDatabase() {
+  static get DATABASE_REVIEW_URL() {
+    const port = 1337 // Change this to your server port
+    return `http://localhost:${port}/reviews`;
+  }
+
+  static fillReviewDatabase() {
+    return fetch(DBHelper.DATABASE_REVIEW_URL).then(res => res.json())
+    .then(reviews => {
+      DBHelper.openReviewDatabase().then(db => {
+        if (!db) return;
+
+        const tx = db.transaction('reviews', 'readwrite');
+        const store = tx.objectStore('reviews');
+        reviews.forEach(review => {
+          store.put(review);
+        })
+        return tx.complete;
+      })
+      return DBHelper.getReviewFromDatabase();
+      // return reviews;
+    }).catch(error => {
+      return error;
+    });
+  }
+
+  static fillRestaurantDatabase() {
     return fetch(DBHelper.DATABASE_URL).then(res => res.json())
     .then(restaurants => {
       DBHelper.openDatabase().then(db => {
@@ -51,6 +88,12 @@ class DBHelper {
   static getFromDatabase() {
     return DBHelper.openDatabase().then(db => {
       return db.transaction('restaurants').objectStore('restaurants').getAll();
+    })
+  }
+
+  static getReviewFromDatabase() {
+    return DBHelper.openReviewDatabase().then(db => {
+      return db.transaction('reviews').objectStore('reviews').getAll();
     })
   }
 
@@ -157,7 +200,7 @@ class DBHelper {
        return error;
      })
    }
-  
+
   /**
    * Restaurant page URL.
    */
