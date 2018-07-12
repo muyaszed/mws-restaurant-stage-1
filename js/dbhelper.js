@@ -104,6 +104,18 @@ class DBHelper {
     return DBHelper.getFromDatabase();
   }
 
+  static fetchReviews() {
+    return DBHelper.getReviewFromDatabase();
+  }
+
+  static fetchReviewByRestaurantId(id) {
+    console.log('hello id');
+    return DBHelper.fetchReviews().then(reviews => {
+      const restaurantReviews = reviews.filter(r => r.restaurant_id == id);
+      
+      return restaurantReviews;
+    })
+  }
   /**
    * Fetch a restaurant by its ID.
    */
