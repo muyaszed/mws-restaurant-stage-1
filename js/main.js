@@ -10,7 +10,6 @@ var markers = []
  */
 document.addEventListener('DOMContentLoaded', (event) => {
   DBHelper.fillRestaurantDatabase();
-  DBHelper.fillReviewDatabase();
   fetchNeighborhoods();
   fetchCuisines();
 
@@ -101,7 +100,7 @@ updateRestaurants = () => {
   const neighborhood = nSelect[nIndex].value;
 
   DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood).then(restaurants => {
-    console.log(restaurants);
+
     resetRestaurants(restaurants);
     fillRestaurantsHTML();
   }).catch(error => {

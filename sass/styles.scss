@@ -104,6 +104,8 @@ nav h1 a, .inside header h1 a {
     color: #01447e;
     text-decoration: underline;
 }
+
+
 /* ====================== Skip Items ====================== */
 #skip-item {
 	position: absolute;
@@ -350,6 +352,16 @@ nav h1 a, .inside header h1 a {
 }
 #restaurant-hours td {
   color: #666;
+}
+
+#reviews-form {
+	width: 100%;
+	padding: 10px 50px 100px;
+	z-index: 10;
+
+	input, select, textarea {
+		background-color: #c5c2c2;
+	}
 }
 
 @media screen and (min-width: 450px) {

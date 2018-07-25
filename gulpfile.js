@@ -6,6 +6,7 @@ var uglify = require('gulp-uglify-es').default;
 var babel = require('gulp-babel');
 var pngquant = require('imagemin-pngquant');
 var imagemin = require('gulp-imagemin');
+var webp = require('gulp-webp');
 
 
 gulp.task('dist', [
@@ -33,7 +34,6 @@ gulp.task('copy-manifest', function() {
 gulp.task('scripts-dist', function() {
 	gulp.src('js/**/*.js')
 		.pipe(babel())
-		.pipe(concat('app.js'))
 		.pipe(uglify())
 		.pipe(gulp.dest('dist/js'));
 });
@@ -56,5 +56,6 @@ gulp.task('copy-images', function() {
 			progressive: true,
 			use: [pngquant()]
 		}))
+		.pipe(webp())
 		.pipe(gulp.dest('dist/images'));
 });

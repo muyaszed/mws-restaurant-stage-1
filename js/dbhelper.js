@@ -12,21 +12,20 @@ class DBHelper {
     }
 
     return idb.open('restaurant', 1, (upgradeDb) => {
-      const store = upgradeDb.createObjectStore('restaurants', {
+      upgradeDb.createObjectStore('restaurants', {
         keyPath: 'id'
       });
     })
   }
 
-  static openReviewDatabase() {
+  static openReviewDatabase(name) {
     if (!navigator.serviceWorker) {
       return Promise.resolve();
     }
 
-    return idb.open('review', 1, (upgradeDb) => {
-      const store = upgradeDb.createObjectStore('reviews', {
-        keyPath: 'id'
-      });
+    return idb.open(name, 1, (upgradeDb) => {
+
+      upgradeDb.createObjectStore('reviews', { keyPath: 'id', autoIncrement: true });
     })
   }
 
@@ -39,29 +38,32 @@ class DBHelper {
     return `http://localhost:${port}/restaurants`;
   }
 
-  static get DATABASE_REVIEW_URL() {
-    const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/reviews`;
-  }
 
-  static fillReviewDatabase() {
-    return fetch(DBHelper.DATABASE_REVIEW_URL).then(res => res.json())
-    .then(reviews => {
-      DBHelper.openReviewDatabase().then(db => {
-        if (!db) return;
+  static fillReviewDatabase(id) {
 
-        const tx = db.transaction('reviews', 'readwrite');
-        const store = tx.objectStore('reviews');
-        reviews.forEach(review => {
-          store.put(review);
+    if(id) {
+      return fetch(`http://localhost:1337/reviews?restaurant_id=${id}`).then(res => res.json())
+      .then(reviews => {
+        DBHelper.openReviewDatabase(id).then(db => {
+          if (!db) return;
+
+          const tx = db.transaction('reviews', 'readwrite');
+          const store = tx.objectStore('reviews');
+
+
+
+          reviews.forEach(review => {
+            store.put(review);
+          })
+          return tx.complete;
         })
-        return tx.complete;
-      })
-      return DBHelper.getReviewFromDatabase();
-      // return reviews;
-    }).catch(error => {
-      return error;
-    });
+        return DBHelper.getReviewFromDatabase(id);
+        // return reviews;
+      }).catch(error => {
+        return error;
+      });
+    }
+
   }
 
   static fillRestaurantDatabase() {
@@ -91,8 +93,8 @@ class DBHelper {
     })
   }
 
-  static getReviewFromDatabase() {
-    return DBHelper.openReviewDatabase().then(db => {
+  static getReviewFromDatabase(name) {
+    return DBHelper.openReviewDatabase(name).then(db => {
       return db.transaction('reviews').objectStore('reviews').getAll();
     })
   }
@@ -108,14 +110,14 @@ class DBHelper {
     return DBHelper.getReviewFromDatabase();
   }
 
-  static fetchReviewByRestaurantId(id) {
-    console.log('hello id');
-    return DBHelper.fetchReviews().then(reviews => {
-      const restaurantReviews = reviews.filter(r => r.restaurant_id == id);
-      
-      return restaurantReviews;
-    })
-  }
+  // static fetchReviewByRestaurantId(id) {
+  //
+  //   return DBHelper.fetchReviews().then(reviews => {
+  //     const restaurantReviews = reviews.filter(r => r.restaurant_id == id);
+  //
+  //     return restaurantReviews;
+  //   })
+  // }
   /**
    * Fetch a restaurant by its ID.
    */
@@ -185,7 +187,7 @@ class DBHelper {
    */
   static fetchNeighborhoods() {
     return DBHelper.fetchRestaurants().then(restaurants => {
-      console.log(restaurants);
+
       // Get all neighborhoods from all restaurants
       const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
       // Remove duplicates from neighborhoods
@@ -244,29 +246,32 @@ class DBHelper {
   // generate picture element and images
   static picturesForRestaurant(restaurant, picture) {
     const sourceLarge = document.createElement('source');
-    sourceLarge.srcset = `/images/${restaurant.id}-large.jpg`;
+    sourceLarge.srcset = `/images/${restaurant.id}-large.webp`;
     sourceLarge.media = `(min-width: 860px)`
     picture.append(sourceLarge);
 
     const sourceMedium = document.createElement('source');
-    sourceMedium.srcset = `/images/${restaurant.id}-medium.jpg`
+    sourceMedium.srcset = `/images/${restaurant.id}-medium.webp`
     sourceMedium.media = `(min-width: 450px)`
     picture.append(sourceMedium);
 
     const image = document.createElement('img');
     image.className = 'restaurant-img';
-    image.src = `${DBHelper.imageUrlForRestaurant(restaurant)}.jpg`;
+    image.src = `${DBHelper.imageUrlForRestaurant(restaurant)}.webp`;
     image.alt = `${restaurant.name}'s restaurant picture`;
     picture.append(image);
   }
 
   //register ServiceWorker
-  static registerServiceWorker() {
+  static registerServiceWorker(restaurantdid = '') {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
+
         navigator.serviceWorker.register('/sw.js').then(function(registration) {
           // Registration was successful
+
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
         }, function(err) {
           // registration failed :(
           console.log('ServiceWorker registration failed: ', err);
@@ -274,5 +279,7 @@ class DBHelper {
       });
     }
   }
+
+
 
 }
