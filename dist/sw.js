@@ -3,6 +3,7 @@ importScripts('/js/idb.js');
 
 var urlToCache = [
   '/',
+  '/index.html',
   '/restaurant.html',
   '/css/styles.css',
   '/js/main.js',
@@ -18,7 +19,9 @@ var urlToCache = [
   '/images/7.webp',
   '/images/8.webp',
   '/images/9.webp',
-  '/images/10.webp'
+  '/images/10.webp',
+  
+
 ];
 
 self.addEventListener('install', function(event) {

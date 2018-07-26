@@ -226,7 +226,7 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/images/${restaurant.photograph}`);
+    return (`/images/${restaurant.id}`);
   }
 
   /**
@@ -273,7 +273,7 @@ class DBHelper {
   }
 
   //register ServiceWorker
-  static registerServiceWorker(restaurantdid = '') {
+  static registerServiceWorker() {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
 

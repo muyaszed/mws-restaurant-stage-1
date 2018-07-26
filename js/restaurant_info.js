@@ -98,8 +98,8 @@ getFormInfo = () => {
   name.value = "";
   rating.value = "1";
   comment.value ="";
-  // document.getElementById('reviews-container').firstElementChild.innerHTML = "";
-  // document.getElementById('reviews-list').innerHTML = "";
+  document.getElementById('reviews-container').firstElementChild.innerHTML = "";
+  document.getElementById('reviews-list').innerHTML = "";
   return review;
 }
 
@@ -292,6 +292,13 @@ fillReviewFormHTML = (restaurant = self.restaurant) => {
     // saveDataToIDB(data, restaurant.id);
     saveDataForBackgroundSync(data)
 
+    DBHelper.getReviewFromDatabase(restaurant.id).then(reviews => {
+      self.restaurant.reviews = reviews;
+      fillReviewsHTML();
+    }).catch(error => {
+      console.log(error);
+    });
+
     DBHelper.getReviewFromDatabase("reviewSync").then(reviews => {
       reviews.forEach(review => {
         console.log(review);
@@ -303,7 +310,7 @@ fillReviewFormHTML = (restaurant = self.restaurant) => {
     })
 
     navigator.serviceWorker.ready.then(function(reg) {
-
+      console.log("hello");
       reg.sync.register('addReview')
     })
     // DBHelper.fetchReviewByRestaurantId(restaurant.id).then(reviews => {
