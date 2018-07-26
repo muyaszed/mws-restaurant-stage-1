@@ -58,11 +58,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 handleFav = (box) => {
+  console.log(box);
   updateFav(box.checked)
   if (box.checked) {
     localStorage.setItem("favBox", 'true');
+    box.setAttribute('aria-checked', 'true');
   }else {
     localStorage.setItem("favBox", 'false');
+    box.setAttribute('aria-checked', 'false');
   }
 };
 
@@ -127,6 +130,14 @@ saveDataForBackgroundSync = (data) => {
   })
 }
 
+setAriaClickState = (element) => {
+  const options = [...element.children];
+  console.log(options);
+  options.forEach(option => {
+    option.selected ? option.setAttribute('aria-selected', 'true') : option.setAttribute('aria-selected', 'false')
+  })
+}
+
 
 /**
  * Get current restaurant from page URL.
@@ -173,7 +184,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const checkBox = document.createElement('input');
   checkBox.setAttribute('id', `checkBox${restaurant.id}`);
   checkBox.setAttribute('type', 'checkbox');
-  checkBox.setAttribute('role', 'checkbox');
+  checkBox.setAttribute('aria-checked', "false");
   checkBox.setAttribute('onchange', 'handleFav(this)');
   const checked = JSON.parse(localStorage.getItem(`checkBox${restaurant.id}`));
   checkBox.checked = checked;
@@ -210,26 +221,16 @@ fillReviewFormHTML = (restaurant = self.restaurant) => {
   const inputCommentLabel = document.createElement('label');
   const submit = document.createElement('input');
 
-  let inputRatingOptions = document.createElement('option');
-  inputRatingOptions.setAttribute('value', '1');
-  inputRatingOptions.innerHTML = '1';
-  inputRating.appendChild(inputRatingOptions);
-  inputRatingOptions = document.createElement('option');
-  inputRatingOptions.setAttribute('value', '2');
-  inputRatingOptions.innerHTML = '2';
-  inputRating.appendChild(inputRatingOptions);
-  inputRatingOptions = document.createElement('option');
-  inputRatingOptions.setAttribute('value', '3');
-  inputRatingOptions.innerHTML = '3';
-  inputRating.appendChild(inputRatingOptions);
-  inputRatingOptions = document.createElement('option');
-  inputRatingOptions.setAttribute('value', '4');
-  inputRatingOptions.innerHTML = '4';
-  inputRating.appendChild(inputRatingOptions);
-  inputRatingOptions = document.createElement('option');
-  inputRatingOptions.setAttribute('value', '5');
-  inputRatingOptions.innerHTML = '5';
-  inputRating.appendChild(inputRatingOptions);
+
+  const options = ["1", "2", "3", "4", "5"];
+  options.forEach(option => {
+    let inputRatingOptions = document.createElement('option');
+    inputRatingOptions.setAttribute('value', option);
+    inputRatingOptions.setAttribute('aria-selected', "false");
+    inputRatingOptions.innerHTML = option;
+    inputRating.appendChild(inputRatingOptions);
+  })
+
 
   form.setAttribute('id', `review-form-${restaurant.id}`);
   form.setAttribute('class', `review-form`);
@@ -240,7 +241,10 @@ fillReviewFormHTML = (restaurant = self.restaurant) => {
   inputNameLabel.innerHTML = "Name:"
 
   inputRating.setAttribute('name', 'ratings');
+  inputRating.setAttribute('role', 'listbox');
+  inputRating.setAttribute('onchange', "setAriaClickState(this)");
   inputRating.setAttribute('id', `input-rating-${restaurant.id}`);
+  inputRating.firstChild.setAttribute('aria-selected', 'true');
   inputRatingLabel.setAttribute('for', `input-rating-${restaurant.id}`)
   inputRatingLabel.innerHTML = "Rating:"
 
@@ -277,6 +281,8 @@ fillReviewFormHTML = (restaurant = self.restaurant) => {
   br = document.createElement('br');
   form.appendChild(br);
   form.appendChild(submit);
+
+
   reviewArea.appendChild(form);
 
   form.addEventListener('submit', (event) => {
